@@ -1,1 +1,0 @@
-# Gitpository is a pository.
