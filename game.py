@@ -144,10 +144,10 @@ def game():
 	answer_raw = raw_input("Would you like to play again? ")
 	answer = answer_raw.lower()
 		
-	if answer == "yes":
+	if answer == "yes" or answer == "y":
 			game()
 
-	elif answer == "no":
+	elif answer == "no" or answer == "n":
 		print
 		print "Thanks for playing."
 		print
@@ -158,6 +158,7 @@ def game():
 		print
 
 game()
+
 
 
 
