@@ -23,9 +23,9 @@ def game():
 # Below I used if and elif statements to create all of the potential scenarios for what
 # the user and what the computer might select, printing the selected options and the
 # results. The section below are all the possiblities of the human winning.
-	if human == q or human == quit
+	if human == "q" or human == "quit":
 		print "You'd better run."
-	else
+	else:
 		if human == "scissors" and cpu == "paper":
 			print
 			print "You chose %s and the computer chose %s." % (human, cpu)
@@ -139,8 +139,10 @@ def game():
 			print
 			print "Error, invalid input."
 		
-	game()
+	        game()
+
 game()
+
 
 
 
