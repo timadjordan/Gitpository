@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cuda.h>
 #include <curand_kernel.h>
+#include <ctime>
+#include <chrono>
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
@@ -39,7 +41,7 @@ __global__ void MCpoints(int* d_out, int n, int n_for, curandState* state)
 int main()
 {
 
-  const long int N = pow(2,30);
+  const long int N = pow(2,31);
   const int B	   = 1024;
   const int TPB    = 32;
   const int T	   = (B*TPB);
@@ -54,15 +56,18 @@ int main()
   curandState *devStates;
   cudaMalloc(&devStates, T*sizeof(int));
 
+  auto t1 = std::chrono::high_resolution_clock::now();
   MCpoints<<<B, TPB>>>(d_out, T, n_for, devStates);
   gpuErrchk( cudaMemcpy(out, d_out, T*sizeof(int), cudaMemcpyDeviceToHost) );
   for (int i=0; i<T; i++)
   {
     counter += out[i];
   }
-
   double pi = 4*double(counter)/double(N);
-  printf("samples = %ld\ncounter = %d\npi = %f\n",N,counter,pi);
+  auto t2 = std::chrono::high_resolution_clock::now();
+  auto t_elapsed = std::chrono::duration<double>(t2-t1).count();
+
+  printf("samples = %ld\ncounter = %d\npi = %f\ntime elapsed: %1.4f sec\n",N,counter,pi,t_elapsed);
 
   cudaFree(d_out);
   cudaFree(devStates);
