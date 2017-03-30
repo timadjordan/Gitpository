@@ -1,4 +1,4 @@
-def init()
+def init():
 	print(weightedAlphabet)
 
 # Global Variables
