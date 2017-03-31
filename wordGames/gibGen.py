@@ -11,9 +11,9 @@ def main(invOptCounter, prevUserChoice):
 #     if userChoice == 'a':
 #         typeOne()
     elif userChoice == 'b':
-        autoTyper('', False)
+        autoTyper('', 0) # 0 means use type 0 words 
     elif userChoice == 'b1':
-        autoTyper('', True)
+        autoTyper('', 1) # with type 1 words
 #     elif userChoice == 'c':
 #         printPattern()
 #     elif userChoice == 'd':
@@ -33,13 +33,15 @@ def main(invOptCounter, prevUserChoice):
         main(invOptCounter, userChoice)
 		
 #types a sentence
-def autoTyper(randSentence, speakable):
+def autoTyper(randSentence, wType):
     sentenceLength = random.randint(1,8)
     while sentenceLength > 0:
-        if speakable != True:
+        if wType == 0:
             randSentence += wordMaker()
-        else:
+        elif wType == 1:
             randSentence += wordMakerPlus()
+		else:
+			randSentence += wordMakerPlusOne()
         if sentenceLength != 1:
             randSentence += ' '
         sentenceLength -= 1
@@ -47,20 +49,20 @@ def autoTyper(randSentence, speakable):
     randSentence += punctuation
     if punctuation == '.' or punctuation == '!' or punctuation == '?':
         print(randSentence)
-        if speakable:
+        if wType == 1:
             main(0, 'b1')
         else:
             main(0, 'b')
     else:
         randSentence += ' '
-        autoTyper(randSentence, speakable)
+        autoTyper(randSentence, wType)
 
 # creates a word
 def wordMaker():
     wordLength = random.randint(1,6)
     word = ''
     while wordLength > 0:
-        word += random.choice(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','x','y','z'])
+        word += random.choice(alphabet)
         wordLength -= 1
     return word
 
@@ -78,6 +80,15 @@ def wordMakerPlus():
             word += random.choice(unVowels + uVSCombos + uVRCombos + uVOtherCombos)
         else:
             word += random.choice(vowels)
+        wordLength -= 1
+    return word
+
+#returns a word with the letters chosen from a weighted list
+def wordMakerPlusOne():
+    wordLength = random.randint(1,6)
+    word = ''
+    while wordLength > 0:
+        word += random.choice(weightedAlphabet)
         wordLength -= 1
     return word
 
@@ -106,6 +117,7 @@ def printChoices():
 
 # Global Variables
 vowels = ['a','e','i','o','u','y']
+alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','x','y','z']
 # There must be a way to use weighted random to select vowels and unVowels.
 # Math, maybe.
 weightedAlphabet = (['e'] * 15 + ['t'] * 12 + ['a'] * 11 + ['o'] * 10
