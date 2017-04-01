@@ -11,13 +11,13 @@ def main(invOptCounter, prevUserChoice):
 	if userChoice == 'r':
 		userChoice = prevUserChoice
 	if userChoice == 'a':
-		autoTyper('', 0) # 0 means use type 0 words 
+		autoTyper('', 0) # 0 means use type0 words 
 	elif userChoice == 'a1':
-		autoTyper('', 1) # with type 1 words
-	elif userChoice == 'a2':
-		autoTyper('', 2)
-#     elif userChoice == 'c':
-#         printPattern()
+		autoTyper('', 1) # with type1 words
+	elif userChoice == 'a2': # Uses words created with
+		autoTyper('', 2)	 # the weighted alphabet.(type2)
+	elif userChoice == 'c':
+		wordList()
 #     elif userChoice == 'd':
 #         proceduralGrammerizerA()
 	elif userChoice == '?':
@@ -43,7 +43,7 @@ def autoTyper(randSentence, wType):
 		elif wType == 1:
 			randSentence += wordMakerPlus()
 		else:
-			randSentence += wordMakerPlusOne()
+			randSentence += wordMakerWeighted()
 		if sentenceLength != 1:
 			randSentence += ' '
 		sentenceLength -= 1
@@ -72,7 +72,7 @@ def wordMaker():
 
 #returns pronouncable words
 def wordMakerPlus():
-	wordLength = random.randint(1,4)
+	wordLength = random.randint(1,6)
 	startsVowel = random.randint(0,1)
 	word = ''
 	if startsVowel == 0:
@@ -88,7 +88,7 @@ def wordMakerPlus():
 	return word
 
 #returns a word with the letters chosen from a weighted list
-def wordMakerPlusOne():
+def wordMakerWeighted():
 	wordLength = random.randint(1,6)
 	word = ''
 	while wordLength > 0:
@@ -100,19 +100,35 @@ def wordMakerPlusOne():
 def punctuationSelector():
 	return random.choice(['.','!','?',',',';',':'])
 
-#checks if the preceeding character in a string is a vowel and returns a bool
+#checks if the last character in a string is a vowel and returns a bool
 def isVowel(word):
-	if word[-1] == 'a' or word[-1] == 'e' or word[-1] == 'i' or word[-1] == 'o' or word[-1] == 'u' or word[-1] == 'y':
+	prevWord = word[-1]
+	if prevWord == 'a' or prevWord == 'e' or prevWord == 'i' or prevWord == 'o' or prevWord == 'u' or prevWord == 'y':
 		return True
 	else:
 		return False
+		
+def wordList():
+	sentenceLength = 10
+	typeOhWords = "Type0 words: "
+	typeOneWords = "Type1 words: "
+	typeTwoWords = "Type2 words: "
+	while sentenceLength > 0:
+		typeOhWords += wordMaker() + ' '
+		typeOneWords += wordMakerPlus() + ' '
+		typeTwoWords += wordMakerWeighted() + ' '
+		sentenceLength -= 1
+	print(typeOhWords)
+	print(typeOneWords)
+	print(typeTwoWords)
+	main(0, 'c')
 	
 #part of init
 def printChoices():
 	print('a: autoTyper')
 	print('a1: autoTyperPlus')
 	print('a2: autoTyperPlusOne')
-#	print('c: printPattern')
+	print('c: sampler')
 #	 print('d: proceduralGrammarizerA')
 	print('r: repeat last command')
 	print('q: quit')
